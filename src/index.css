@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/*
+ * Theme tokens — CSS custom properties for light/dark theming.
+ *
+ * Structural colors (backgrounds, text, borders) swap automatically
+ * based on .light / .dark class on <html>.
+ *
+ * Usage in components:
+ *   bg-pg              page background
+ *   bg-card            card / panel background
+ *   bg-raised          inputs, bar tracks, elevated surfaces
+ *   hover:bg-hover     hover states
+ *   text-ink           primary text
+ *   text-ink2          secondary text
+ *   text-ink3          muted text
+ *   text-ink4          faint text
+ *   text-ink5          hint / subtle labels
+ *   border-line        default border
+ *   border-line2       strong border
+ *
+ * Score / accent colors:
+ *   text-c-green       top score / positive
+ *   text-c-green2      good score
+ *   text-c-yellow      neutral score
+ *   text-c-orange      warning score
+ *   text-c-red         bad score / negative / error
+ *   text-c-blue        info / links
+ */
+
+/* ── Light theme (default) ─────────────────────────────────── */
+:root {
+  /* Structural */
+  --th-pg: #f8fafc;
+  --th-card: #ffffff;
+  --th-raised: #e2e8f0;
+  --th-hover: #cbd5e1;
+  --th-ink: #0f172a;
+  --th-ink2: #475569;
+  --th-ink3: #64748b;
+  --th-ink4: #94a3b8;
+  --th-ink5: #cbd5e1;
+  --th-line: #e2e8f0;
+  --th-line2: #cbd5e1;
+  --th-overlay-bg: rgba(0,0,0,0.3);
+  --gauge-track: #cbd5e1;
+  --needle: #0f172a;
+
+  /* Score text colors (WCAG AA on white) */
+  --th-c-green: #15803d;
+  --th-c-green2: #16a34a;
+  --th-c-yellow: #a16207;
+  --th-c-orange: #c2410c;
+  --th-c-red: #b91c1c;
+
+  /* Accent colors */
+  --th-c-blue: #2563eb;
+  --th-c-purple: #7e22ce;
+  --th-c-cyan: #0e7490;
+  --th-c-amber: #92400e;
+}
+
+/* ── Dark theme ────────────────────────────────────────────── */
+.dark {
+  --th-pg: #030712;
+  --th-card: #111827;
+  --th-raised: #1f2937;
+  --th-hover: #374151;
+  --th-ink: #ffffff;
+  --th-ink2: #d1d5db;
+  --th-ink3: #9ca3af;
+  --th-ink4: #6b7280;
+  --th-ink5: #4b5563;
+  --th-line: #1f2937;
+  --th-line2: #374151;
+  --th-overlay-bg: rgba(0,0,0,0.7);
+  --gauge-track: #374151;
+  --needle: #ffffff;
+
+  --th-c-green: #4ade80;
+  --th-c-green2: #86efac;
+  --th-c-yellow: #fde047;
+  --th-c-orange: #fb923c;
+  --th-c-red: #f87171;
+
+  --th-c-blue: #60a5fa;
+  --th-c-purple: #c084fc;
+  --th-c-cyan: #22d3ee;
+  --th-c-amber: #fbbf24;
+}
+
+/* ── Register as Tailwind theme colors ─────────────────────── */
+@theme {
+  --color-pg: var(--th-pg);
+  --color-card: var(--th-card);
+  --color-raised: var(--th-raised);
+  --color-hover: var(--th-hover);
+  --color-ink: var(--th-ink);
+  --color-ink2: var(--th-ink2);
+  --color-ink3: var(--th-ink3);
+  --color-ink4: var(--th-ink4);
+  --color-ink5: var(--th-ink5);
+  --color-line: var(--th-line);
+  --color-line2: var(--th-line2);
+  --color-overlay-bg: var(--th-overlay-bg);
+  --color-c-green: var(--th-c-green);
+  --color-c-green2: var(--th-c-green2);
+  --color-c-yellow: var(--th-c-yellow);
+  --color-c-orange: var(--th-c-orange);
+  --color-c-red: var(--th-c-red);
+  --color-c-blue: var(--th-c-blue);
+  --color-c-purple: var(--th-c-purple);
+  --color-c-cyan: var(--th-c-cyan);
+  --color-c-amber: var(--th-c-amber);
+}
