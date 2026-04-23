@@ -6,7 +6,7 @@ import type { SeriesResult } from '../types';
 import type { CompositeResult } from '../services/composite';
 
 // Cached backtest scores (from backtest_scores.json)
-import backtestScores from '../../backtest_scores.json';
+import backtestScores from '../../scratch/backtest_scores.json';
 
 interface EventScores {
   label: string;
@@ -71,6 +71,7 @@ function buildMockResults(scores: Record<string, number | null>): SeriesResult[]
       minBarNum: 0,
       closesCount: 500,
       lastCloseValue: 0,
+      lastDataDate: '',
       updatedAt: '',
     };
   });

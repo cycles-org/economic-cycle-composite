@@ -19,7 +19,7 @@
  * "recession probable" and "significant slowdown / stress event."
  */
 
-import type { CompositeResult, LayerScore, DivergenceInfo } from './composite';
+import type { CompositeResult, LayerScore } from './composite';
 import type { ProjectionResult } from './projection';
 
 export type RecessionRisk = 'low' | 'elevated' | 'high' | 'very-high';

@@ -6,7 +6,7 @@
  * data releases to monitor for confirmation.
  */
 
-import type { ProjectionResult, SeriesProjection, LayerProjection } from './projection';
+import type { ProjectionResult, SeriesProjection } from './projection';
 
 // ── Per-series forward narrative fragments ────────────────────────
 
@@ -243,7 +243,6 @@ export function buildProjectionNarrative(projection: ProjectionResult): {
 } {
   const { projectedCompositeScores, projectedRegimes, regimeChanges, overallTrend, layers, confidence } = projection;
 
-  const currentComposite = layers.reduce((s, l) => s + l.currentScore * 0.01, 0) * 100; // approx
   const finalScore = projectedCompositeScores[projectedCompositeScores.length - 1];
   const finalRegime = projectedRegimes[projectedRegimes.length - 1];
   const currentRegime = regimeChanges.length > 0 ? regimeChanges[0].fromRegime : finalRegime;

@@ -6,7 +6,7 @@ interface Props {
 }
 
 export function ProjectionNarrative({ projection }: Props) {
-  const { headline, body, keyDrivers, watchList } = buildProjectionNarrative(projection);
+  const { headline, body, keyDrivers } = buildProjectionNarrative(projection);
 
   return (
     <div className="rounded-lg border border-line bg-card p-5">

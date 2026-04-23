@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import type { LayerScore } from '../services/composite';
 import { SeriesInfoModal } from './SeriesInfoModal';
-import type { CycleInfo } from './SeriesInfoModal';
 import { LayerReasoningModal } from './LayerReasoningModal';
-import { LAYER_WEIGHTS } from '../config/seriesRegistry';
 import { getLayerSummary } from '../config/layerSummaries';
 import { PhaseIcon } from './PhaseIcon';
 

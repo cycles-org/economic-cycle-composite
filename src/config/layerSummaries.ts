@@ -162,7 +162,7 @@ function buildScoreAttribution(series: SeriesResult[], layerScore: number): stri
   // Classify each series
   const bullish = sorted.filter(s => s.adjustedScore >= 55);
   const bearish = sorted.filter(s => s.adjustedScore < 45);
-  const neutral = sorted.filter(s => s.adjustedScore >= 45 && s.adjustedScore < 55);
+  // neutral band reserved for future narrative expansion
 
   const parts: string[] = [];
 

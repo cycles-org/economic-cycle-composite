@@ -15,7 +15,8 @@ export function CompositeGauge({ composite }: Props) {
   const cy = 95;
   const circumference = Math.PI * radius;
   const clampedScore = Math.max(GAUGE_MIN, Math.min(GAUGE_MAX, masterScore));
-  const progress = ((clampedScore - GAUGE_MIN) / (GAUGE_MAX - GAUGE_MIN)) * circumference;
+  // progress reserved for future half-circle fill visualization
+  void (((clampedScore - GAUGE_MIN) / (GAUGE_MAX - GAUGE_MIN)) * circumference);
 
   return (
     <div className={`rounded-lg border border-line p-6 ${regime.bgColor}`}>

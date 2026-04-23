@@ -27,8 +27,10 @@ function App() {
   const [liquidityResult, setLiquidityResult] = useState<LiquidityResult | undefined>(undefined);
   const [composite, setComposite] = useState<CompositeResult>({
     masterScore: 0,
+    divergenceAdjustment: 0,
     regime: { label: 'Neutral', color: 'text-yellow-300', bgColor: 'bg-yellow-500/10', implication: '' },
     divergence: { spread: 0, signal: 'none', description: '' },
+    liquidityDivergence: { l5l1Spread: 0, signal: 'none', description: '', regimeDowngrade: false },
     layers: [],
     totalSeries: 0,
     validSeries: 0,

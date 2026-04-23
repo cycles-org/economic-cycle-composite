@@ -15,7 +15,6 @@
 
 import type { OhlcvBar, CyclePeak, LiquiditySeriesResult, LiquidityResult } from '../types';
 import { LIQUIDITY_NFL_COMPONENTS, LIQUIDITY_SCORED_SERIES, LIQUIDITY_FX_TICKERS } from '../config/seriesRegistry';
-import type { LiquiditySeriesConfig } from '../config/seriesRegistry';
 import { ensureDataset, getDatasetSeriesRaw, cycleScannerNoDetrend, getCrsi, hpDetrend } from './cycleToolsApi';
 import { interpolatePhaseScore } from './phaseScoring';
 
@@ -675,7 +674,6 @@ export async function runLiquidityPipeline(
     }
 
     // Compute weighted composite level (indexed to 100, dynamic weighting for available series)
-    const totalConfigWeight = LIQUIDITY_SCORED_SERIES.reduce((s, c) => s + c.weight, 0);
     const compositeLevel: (number | null)[] = trimmedWednesdays.map((_, i) => {
       let wSum = 0, availW = 0;
       for (const cfg of LIQUIDITY_SCORED_SERIES) {

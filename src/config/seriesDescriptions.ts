@@ -245,7 +245,7 @@ export const SERIES_DESCRIPTIONS: Record<string, SeriesDescription> = {
  * its contribution to the composite score.
  */
 export function generateCurrentInterpretation(
-  fredId: string,
+  _fredId: string,
   score: number,
   phaseStatus: string,
   invert: boolean,
