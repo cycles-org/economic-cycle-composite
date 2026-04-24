@@ -1,10 +1,46 @@
 import { useState } from 'react';
-import type { SeriesResult } from '../types';
+import type { SeriesResult, LiquidityResult, LiquiditySeriesResult } from '../types';
 import { SeriesInfoModal } from './SeriesInfoModal';
 import { PhaseIcon } from './PhaseIcon';
+import { LIQUIDITY_SCORED_SERIES } from '../config/seriesRegistry';
 
 interface Props {
   results: SeriesResult[];
+  liquidityResult?: LiquidityResult;
+}
+
+/**
+ * Adapt a LiquiditySeriesResult (L5) into the shared SeriesResult shape so it
+ * can be rendered in the unified "All Series" table alongside L1-L4.
+ */
+function adaptLiquiditySeries(s: LiquiditySeriesResult): SeriesResult {
+  const cfg = LIQUIDITY_SCORED_SERIES.find(c => c.fredId === s.seriesId);
+  return {
+    symbolId: cfg?.tickerId ?? s.seriesId,
+    fredId: s.seriesId,
+    layer: 5,
+    layerName: 'Liquidity',
+    frequency: 'weekly',
+    invert: false,
+    seriesName: s.name,
+    rawPhaseScore: s.avgPhaseScore ?? 0,
+    phaseScore: s.phaseScore,
+    adjustedScore: s.combinedScore,
+    dominantCycleLength: s.cycleLength,
+    amplitude: 0,
+    bartels: s.bartels,
+    strength: s.strength,
+    normalizedStrength: 0,
+    stabilityScore: s.stability,
+    phaseStatus: s.phaseStatus,
+    dominantRank: 1,
+    minBarNum: 0,
+    closesCount: s.closesCount,
+    lastCloseValue: s.momentumYoY,
+    lastDataDate: s.lastDataDate,
+    updatedAt: '',
+    error: s.error,
+  };
 }
 
 type SortKey = 'fredId' | 'layer' | 'adjustedScore' | 'bartels' | 'dominantCycleLength' | 'strength' | 'phaseStatus';
@@ -26,12 +62,16 @@ function scoreColor(value: number): string {
   return 'text-c-red';
 }
 
-export function SeriesGrid({ results }: Props) {
+export function SeriesGrid({ results, liquidityResult }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>('layer');
   const [sortAsc, setSortAsc] = useState(true);
   const [infoSeries, setInfoSeries] = useState<SeriesResult | null>(null);
 
-  const sorted = [...results].sort((a, b) => {
+  // Merge L1-L4 results with L5 liquidity series (adapted to shared shape)
+  const liquidityRows = liquidityResult?.series.map(adaptLiquiditySeries) ?? [];
+  const allResults = [...results, ...liquidityRows];
+
+  const sorted = [...allResults].sort((a, b) => {
     const av = a[sortKey];
     const bv = b[sortKey];
     if (typeof av === 'number' && typeof bv === 'number') {
@@ -59,7 +99,7 @@ export function SeriesGrid({ results }: Props) {
   return (
     <div className="bg-card border border-line rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-line">
-        <h3 className="text-ink font-medium">All Series — L1-L4 ({results.length})</h3>
+        <h3 className="text-ink font-medium">All Series — L1-L5 ({allResults.length})</h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">

@@ -15,7 +15,7 @@ export function ApiKeyInput({ onSubmit, loading }: Props) {
           US Economic Cycle Regime
         </h1>
         <p className="text-ink3 text-sm mb-6">
-          28 series · 5 layers · Macro regime scoring
+          31 series · 5 layers · Macro regime scoring
         </p>
 
         <label className="block text-sm text-ink3 mb-2">
@@ -37,11 +37,11 @@ export function ApiKeyInput({ onSubmit, loading }: Props) {
           disabled={!key.trim() || loading}
           className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-hover disabled:text-ink4 text-white font-medium rounded px-4 py-2 transition-colors"
         >
-          {loading ? 'Running Pipeline...' : 'Run All 28 Series'}
+          {loading ? 'Running Pipeline...' : 'Run All 31 Series'}
         </button>
 
         <p className="text-ink5 text-xs mt-4">
-          Runs cycle analysis on all 28 series across 5 layers.
+          Runs cycle analysis on all 31 series across 5 layers.
           API key is stored in session only — never persisted.
         </p>
       </div>

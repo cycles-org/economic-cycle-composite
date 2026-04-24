@@ -331,11 +331,14 @@ async function processOneMomentumSeries(
   currentMomentum: number,
   log: (msg: string) => void,
   extractStructural = false,
+  lastDataDate = '',
 ): Promise<LiquiditySeriesResult> {
   const emptyResult = (error: string): LiquiditySeriesResult => ({
     seriesId, name, cycleLength: 0, phaseStatus: error, avgPhaseScore: 0,
     phaseScore: 50, crsi: 50, crsiBandScore: 50,
-    combinedScore: 50, bartels: 0, stability: 0, momentumYoY: currentMomentum, error,
+    combinedScore: 50, bartels: 0, stability: 0,
+    strength: 0, closesCount: momentumCloses.length, lastDataDate,
+    momentumYoY: currentMomentum, error,
   });
 
   try {
@@ -415,6 +418,9 @@ async function processOneMomentumSeries(
       combinedScore,
       bartels: Math.round(dom.bartelsValue * 10) / 10,
       stability: Math.round(dom.stabilityScore * 100) / 100,
+      strength: Math.round((dom.strength ?? 0) * 10) / 10,
+      closesCount: momentumCloses.length,
+      lastDataDate,
       momentumYoY: Math.round(currentMomentum * 100) / 100,
       ...structuralFields,
     };
@@ -599,12 +605,21 @@ export async function runLiquidityPipeline(
     const series = trimmedData.get(cfg.fredId)!;
     const nonNullCount = series.filter(v => v != null).length;
 
+    // Find last non-null index to determine the most recent observation date
+    let lastIdx = -1;
+    for (let i = series.length - 1; i >= 0; i--) {
+      if (series[i] != null) { lastIdx = i; break; }
+    }
+    const lastDataDate = lastIdx >= 0 ? trimmedWednesdays[lastIdx] : '';
+
     if (nonNullCount < 60) {
       allResults.push({
         seriesId: cfg.fredId, name: cfg.name,
         cycleLength: 0, phaseStatus: 'Insufficient Data', avgPhaseScore: 0,
         phaseScore: 50, crsi: 50, crsiBandScore: 50,
-        combinedScore: 50, bartels: 0, stability: 0, momentumYoY: 0,
+        combinedScore: 50, bartels: 0, stability: 0,
+        strength: 0, closesCount: nonNullCount, lastDataDate,
+        momentumYoY: 0,
         error: `Only ${nonNullCount} bars`,
       });
       continue;
@@ -616,7 +631,9 @@ export async function runLiquidityPipeline(
         seriesId: cfg.fredId, name: cfg.name,
         cycleLength: 0, phaseStatus: 'Insufficient Momentum', avgPhaseScore: 0,
         phaseScore: 50, crsi: 50, crsiBandScore: 50,
-        combinedScore: 50, bartels: 0, stability: 0, momentumYoY: 0,
+        combinedScore: 50, bartels: 0, stability: 0,
+        strength: 0, closesCount: momentum.length, lastDataDate,
+        momentumYoY: 0,
         error: `Only ${momentum.length} momentum points`,
       });
       continue;
@@ -626,6 +643,7 @@ export async function runLiquidityPipeline(
       apiKey, cfg.fredId, cfg.name,
       momentum, momentum[momentum.length - 1] ?? 0, log,
       false, // structural cycle detected separately on GLC composite
+      lastDataDate,
     );
     allResults.push(result);
   }

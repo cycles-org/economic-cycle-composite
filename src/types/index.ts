@@ -109,6 +109,9 @@ export interface LiquiditySeriesResult {
   combinedScore: number;    // 0.5 × phaseScore + 0.5 × crsiBandScore
   bartels: number;
   stability: number;
+  strength: number;         // spectral strength of dominant cycle
+  closesCount: number;      // number of momentum bars fed to CycleScanner
+  lastDataDate: string;     // date (YYYY-MM-DD) of last observation used
   momentumYoY: number;      // current 52-week momentum %
   // Structural cycle (~65-month Howell cycle) — NFL only
   structuralCycleLength?: number;

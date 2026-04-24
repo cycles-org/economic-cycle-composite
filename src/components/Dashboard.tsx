@@ -129,7 +129,7 @@ export function Dashboard({ composite, recessionIndicator, results, liquidityRes
         )}
 
         {/* Full Series Grid */}
-        {results.length > 0 && <SeriesGrid results={results} />}
+        {results.length > 0 && <SeriesGrid results={results} liquidityResult={liquidityResult} />}
 
         {/* Log Panel */}
         <details className="bg-card border border-line rounded-lg">
