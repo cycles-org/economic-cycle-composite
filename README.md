@@ -1,8 +1,8 @@
 # Economic Cycle Composite
 
-A client-side React + TypeScript SPA that analyzes **28 macro series + 8 liquidity series** across 5 layers to produce a macro regime score (0–100) for equity cycle positioning.
+A client-side React + TypeScript SPA that analyzes **23 macro series + 8 liquidity series (31 total)** across 5 layers to produce a macro regime score (0–100) for equity cycle positioning.
 
-The liquidity layer (L5) reconstructs Michael Howell's Global Liquidity Cycle from public data and detects the ~66-month structural cycle with ~78% correlation to Howell's proprietary GLI.
+The liquidity layer (L5) reconstructs a Global Liquidity Cycle from 8 public FRED/central-bank series and detects a ~66-month structural cycle.
 
 ## Architecture
 
