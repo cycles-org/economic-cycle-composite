@@ -14,7 +14,7 @@ The liquidity layer (L5) reconstructs a Global Liquidity Cycle from 8 public FRE
 | L2 | Coincident Activity | 15% | 4 | Industrial production, payrolls, income, unemployment |
 | L3 | Financial Stress | 20% | 4 | VIX, credit spreads (Baa, HY OAS), financial stress index |
 | L4 | Inflation / Policy | 10% | 6 | CPI, core CPI, breakevens, Fed funds, M2, USD |
-| L5 | Liquidity (Howell GLC) | 25% | 8 | WALCL, ECB, BOJ, NFL, TOTBKCR, WRESBAL, COMPOUT, WRMFNS |
+| L5 | Liquidity | 25% | 8 | WALCL, ECB, BOJ, NFL, TOTBKCR, WRESBAL, COMPOUT, WRMFNS |
 
 ### Regime Classification
 
@@ -34,9 +34,9 @@ The liquidity layer (L5) reconstructs a Global Liquidity Cycle from 8 public FRE
 
 Full pre-downturn cascade: L5 tightens → L5-L1 diverges → L1-L2 diverges → regime deteriorates.
 
-### Liquidity Layer (L5) — 8-Series Howell GLC
+### Liquidity Layer (L5) — 8-Series Global Liquidity Composite
 
-Reconstructs Howell's ~65-month Global Liquidity Cycle from 8 dynamically-weighted series:
+Reconstructs a ~65-month Global Liquidity Cycle from 8 dynamically-weighted series:
 
 | Series | Weight | Role |
 |--------|--------|------|
@@ -49,9 +49,9 @@ Reconstructs Howell's ~65-month Global Liquidity Cycle from 8 dynamically-weight
 | COMPOUT (Commercial Paper) | 1 | Shadow banking |
 | WRMFNS (Retail Money Markets) | 1 | Cash / dry powder |
 
-**Display score** = `0.8 × structural_score + 0.2 × component_composite` — the 80% structural weighting anchors the reading to Howell's ~66-month cycle detected from the merged GLC composite, while individual components provide a 20% modulation.
+**Display score** = `0.8 × structural_score + 0.2 × component_composite` — the 80% structural weighting anchors the reading to the ~66-month cycle detected from the merged composite, while individual components provide a 20% modulation.
 
-Critical implementation detail: the structural pipeline requires a **Howell pre-seed** (1975–2003 GLI-MOM data at `public/US-GLI-MOM.csv`) to populate the rolling pctrank window correctly. Without it, the structural score is off by ~15–20 points. See `docs/liquidity-pipeline-specification.md` for full pipeline.
+See `docs/liquidity-pipeline-specification.md` for the full pipeline.
 
 ## Pipeline
 
@@ -95,7 +95,7 @@ EconomicCycleComposite/
 │   ├── components/              Dashboard, LiquidityCard, CompositeGauge, etc.
 │   ├── services/
 │   │   ├── pipeline.ts          Per-series CycleScanner + scoring for L1–L4
-│   │   ├── liquidityPipeline.ts L5 8-series GLC pipeline (this is the core)
+│   │   ├── liquidityPipeline.ts L5 8-series liquidity pipeline (this is the core)
 │   │   ├── cycleToolsApi.ts     REST API wrappers
 │   │   ├── composite.ts         Master composite + divergence overlays
 │   │   ├── phaseScoring.ts      Interpolated phase score lookup
@@ -106,10 +106,10 @@ EconomicCycleComposite/
 │   │   └── layerSummaries.ts    Per-layer regime labels & reasoning
 │   └── types/                   Shared type definitions
 ├── public/
-│   └── US-GLI-MOM.csv           Howell GLI-MOM 1975-2025 (pre-seed — required)
+│   └── US-GLI-MOM.csv           Historical liquidity momentum 1975-2025 (pre-seed — required)
 ├── docs/
 │   ├── composite-methodology.md        Overall 5-layer methodology (entry point)
-│   ├── liquidity-layer-methodology.md  L5 deep dive (Howell framework)
+│   ├── liquidity-layer-methodology.md  L5 deep dive (liquidity framework)
 │   └── liquidity-pipeline-specification.md  L5 step-by-step spec (authoritative)
 ├── scripts/                     Backtest scripts (Node/ts-node)
 ├── scratch/                     Prototype/exploration scripts (historical; kept for reference)
