@@ -1,0 +1,131 @@
+{
+  "runDate": "2026-04-27T09:09:38.678Z",
+  "method": {
+    "bandShort": 200,
+    "bandLong": 400,
+    "edgeTrim": 250
+  },
+  "spans": {
+    "ECB": {
+      "first": "1999-01-01T00:00:00",
+      "last": "2026-04-17T00:00:00",
+      "n": 1425
+    },
+    "WALCL": {
+      "first": "2002-12-18T00:00:00",
+      "last": "2026-04-22T00:00:00",
+      "n": 1219
+    },
+    "TOTBKCR": {
+      "first": "1973-01-03T00:00:00",
+      "last": "2026-04-15T00:00:00",
+      "n": 2781
+    },
+    "overlap": {
+      "first": "2002-12-18T00:00:00",
+      "last": "2026-04-15T00:00:00",
+      "n": 1218
+    }
+  },
+  "results": [
+    {
+      "label": "ECB ⇄ Jupiter/Saturn synodic ¼",
+      "period": "258w",
+      "kind": "astro",
+      "filter": "4th-order Butterworth zero-phase [200, 400]",
+      "n": 925,
+      "stdLinear": 0.5746747547226603,
+      "stdCircular": 0.5723519866160031,
+      "meanLagRad": -2.4912988775447267,
+      "verdict": "MODERATE"
+    },
+    {
+      "label": "ECB ⇄ Howell C67 structural",
+      "period": "286w",
+      "kind": "astro",
+      "filter": "4th-order Butterworth zero-phase [200, 400]",
+      "n": 925,
+      "stdLinear": 0.3699616097796409,
+      "stdCircular": 0.37244208930508427,
+      "meanLagRad": -0.7934211045162066,
+      "verdict": "STRONG"
+    },
+    {
+      "label": "TOTBKCR ⇄ WALCL",
+      "period": "372w / 335w",
+      "kind": "real",
+      "filter": "4th-order Butterworth zero-phase [200, 400]",
+      "n": 718,
+      "stdLinear": 0.4397476002996962,
+      "stdCircular": 0.44414796692911973,
+      "meanLagRad": 0.04531152902180975,
+      "meanLagWeeks": 2.5492842763855688,
+      "verdict": "STRONG"
+    }
+  ],
+  "surrogateAnalyses": [
+    {
+      "label": "Row 1",
+      "n": 1000,
+      "realStd": 0.5746747547226603,
+      "surrogateMean": 1.4834385860108918,
+      "surrogateStdDev": 0.5334535265344387,
+      "surrogateQ05": 0.5475827852268834,
+      "surrogateQ50": 1.5489596881071341,
+      "surrogateQ95": 2.2904957342657846,
+      "pValue": 0.061,
+      "significant": false,
+      "significantP10": true,
+      "interpretation": "Real Std at the 6.1th percentile — borderline (p<0.10 but not p<0.05). Suggestive but not decisive."
+    },
+    {
+      "label": "Row 2",
+      "n": 1000,
+      "realStd": 0.3699616097796409,
+      "surrogateMean": 1.3597817308393534,
+      "surrogateStdDev": 0.583644673755221,
+      "surrogateQ05": 0.46402594813812276,
+      "surrogateQ50": 1.329826684944476,
+      "surrogateQ95": 2.2842150542513977,
+      "pValue": 0.019,
+      "significant": true,
+      "significantP10": true,
+      "interpretation": "Real Std lies in the lower 1.9% tail — significant phase coherence at p<0.05."
+    },
+    {
+      "label": "Row 3",
+      "n": 1000,
+      "realStd": 0.4397476002996962,
+      "surrogateMean": 1.0675777875489905,
+      "surrogateStdDev": 0.7405718699284242,
+      "surrogateQ05": 0.1998919136449087,
+      "surrogateQ50": 0.8366984517297129,
+      "surrogateQ95": 2.4413806682925285,
+      "pValue": 0.255,
+      "significant": false,
+      "significantP10": false,
+      "interpretation": "Real Std at the 25.5th percentile — cannot reject random null (p≥0.10)."
+    }
+  ],
+  "currentPhases": [
+    {
+      "name": "Jupiter/Saturn synodic ¼",
+      "period": 258,
+      "tNowWeeks": 1425,
+      "cyclesElapsed": 5.523255813953488,
+      "phaseRad": 3.287713242128852,
+      "phaseDeg": 188.37209302325576,
+      "status": "Downtrend_Neutral"
+    },
+    {
+      "name": "Howell C67 structural",
+      "period": 286,
+      "tNowWeeks": 1425,
+      "cyclesElapsed": 4.9825174825174825,
+      "phaseRad": 6.173339410200921,
+      "phaseDeg": 353.7062937062936,
+      "status": "Uptrend_Starting (rising)"
+    }
+  ],
+  "tNowWeeks": 1425
+}
