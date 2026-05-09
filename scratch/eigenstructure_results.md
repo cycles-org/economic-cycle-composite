@@ -99,6 +99,48 @@ SNR: 4.831
 
 **Prediction 3 Verdict**: PASS — Period 64.0 months (Howell!)
 
+## Part E: Bivector Magnitude & Regime Transition Detection
+
+Mode 1 & Mode 2 Projection & Hilbert Transform:
+  Signal 1 range: [-56.15, 57.88]
+  Signal 2 range: [-79.03, 99.43]
+  Bivector magnitude range: [0.0003, 0.9999]
+
+Regime Transition Detection:
+  Bivector magnitude change (mean): 0.249150
+  Bivector magnitude change (std): 0.222681
+  Transition threshold (mean + 2σ): 0.694513
+  Transitions detected: 7
+
+Regime transition events (t-index):
+  t=6: magnitude change = 0.824757
+  t=11: magnitude change = 0.717317
+  t=17: magnitude change = 0.947047
+  t=26: magnitude change = 0.772670
+  t=85: magnitude change = 0.771050
+  t=102: magnitude change = 0.832835
+  t=103: magnitude change = 0.877318
+
+**Prediction 4: Bivector as Regime Transition Leading Indicator**
+
+Bivector Statistics:
+  Mean bivector magnitude at transitions: 0.4041
+  Mean bivector magnitude baseline: 0.5629
+  Difference (transition - baseline): -0.1589
+  Bivector coherence (1 = perfect separation): 0.445
+  Transition frequency: 5.1% of time steps
+
+Permutation Test (1000 permutations):
+  Observed difference: -0.1589
+  Extreme permutations: 250/1000
+  **p-value: 0.2507**
+
+**Prediction 4 Verdict**: FAIL — p=0.2507 >= 0.05; insufficient evidence of regime transition signature
+
+**Interpretation**:
+✗ Bivector magnitude does not show statistically significant regime structure.
+✗ Detected transitions may reflect noise rather than true regime changes.
+
 ══════════════════════════════════════════════════════════════════════
 SUMMARY
 ══════════════════════════════════════════════════════════════════════

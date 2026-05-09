@@ -512,6 +512,210 @@ async function main() {
     log('');
   }
 
+  // ── PART E: Bivector Magnitude & Regime Transitions ──
+  if (best.persistentModes.length >= 2) {
+    log('## Part E: Bivector Magnitude & Regime Transition Detection');
+    log('');
+
+    // Use appropriate data for bivector analysis based on variant
+    let data_for_bivector;
+    if (best.name === 'Demeaned Levels') {
+      data_for_bivector = [L1_dm, L2_dm, L3_dm, L4_dm, L5_dm];
+    } else if (best.name === '12-Month Differences') {
+      data_for_bivector = [L1_12m, L2_12m, L3_12m, L4_12m, L5_12m];
+    } else {
+      data_for_bivector = [L1_1m, L2_1m, L3_1m, L4_1m, L5_1m];
+    }
+
+    // Project onto first two eigenvectors
+    const v1 = best.eigenvectors[0]; // Mode 1
+    const v2 = best.eigenvectors[1]; // Mode 2
+
+    const signal1 = [], signal2 = [];
+    for (let t = 0; t < data_for_bivector[0].length; t++) {
+      let proj1 = 0, proj2 = 0;
+      for (let i = 0; i < 5; i++) {
+        const val = data_for_bivector[i][t];
+        proj1 += val * v1[i];
+        proj2 += val * v2[i];
+      }
+      signal1.push(proj1);
+      signal2.push(proj2);
+    }
+
+    // Hilbert transform to get instantaneous phase
+    const hilbert1 = hilbert(signal1);
+    const hilbert2 = hilbert(signal2);
+
+    // Compute phase and bivector magnitude
+    const phases1 = hilbert1.imag.map((im, i) => Math.atan2(im, hilbert1.real[i]));
+    const phases2 = hilbert2.imag.map((im, i) => Math.atan2(im, hilbert2.real[i]));
+
+    const bivector_mag = [];
+    const phase_diff = [];
+
+    for (let t = 0; t < phases1.length; t++) {
+      const dphi = phases2[t] - phases1[t];
+      const bivec_mag = Math.sin(dphi / 2) ** 2; // Bivector magnitude from phase difference
+      bivector_mag.push(bivec_mag);
+      phase_diff.push(dphi);
+    }
+
+    // Detect regime transitions as sharp changes in bivector magnitude
+    const biv_diff = [];
+    for (let t = 1; t < bivector_mag.length; t++) {
+      biv_diff.push(Math.abs(bivector_mag[t] - bivector_mag[t-1]));
+    }
+
+    const biv_diff_mean = mean(biv_diff);
+    const biv_diff_std = std(biv_diff);
+    const transition_threshold = biv_diff_mean + 2 * biv_diff_std;
+
+    const transitions = [];
+    for (let t = 1; t < bivector_mag.length; t++) {
+      if (biv_diff[t-1] > transition_threshold) {
+        transitions.push({ t, magnitude_change: biv_diff[t-1] });
+      }
+    }
+
+    // Statistics
+    log(`Mode 1 & Mode 2 Projection & Hilbert Transform:`);
+    log(`  Signal 1 range: [${Math.min(...signal1).toFixed(2)}, ${Math.max(...signal1).toFixed(2)}]`);
+    log(`  Signal 2 range: [${Math.min(...signal2).toFixed(2)}, ${Math.max(...signal2).toFixed(2)}]`);
+    log(`  Bivector magnitude range: [${Math.min(...bivector_mag).toFixed(4)}, ${Math.max(...bivector_mag).toFixed(4)}]`);
+    log('');
+
+    log(`Regime Transition Detection:`);
+    log(`  Bivector magnitude change (mean): ${biv_diff_mean.toFixed(6)}`);
+    log(`  Bivector magnitude change (std): ${biv_diff_std.toFixed(6)}`);
+    log(`  Transition threshold (mean + 2σ): ${transition_threshold.toFixed(6)}`);
+    log(`  Transitions detected: ${transitions.length}`);
+    log('');
+
+    if (transitions.length > 0) {
+      log(`Regime transition events (t-index):`);
+      for (let i = 0; i < Math.min(10, transitions.length); i++) {
+        const tr = transitions[i];
+        log(`  t=${tr.t}: magnitude change = ${tr.magnitude_change.toFixed(6)}`);
+      }
+      if (transitions.length > 10) {
+        log(`  ... and ${transitions.length - 10} more transitions`);
+      }
+      log('');
+    }
+
+    // Prediction 4: Permutation Test for Statistical Significance
+    // Compare bivector magnitude at transitions vs. baseline periods
+
+    const transition_indices = new Set(transitions.map(t => t.t));
+    const pre_transition_biv = [];
+    const baseline_biv = [];
+
+    for (let t = 0; t < bivector_mag.length; t++) {
+      if (transition_indices.has(t)) {
+        pre_transition_biv.push(bivector_mag[t]);
+      } else {
+        baseline_biv.push(bivector_mag[t]);
+      }
+    }
+
+    const obs_mean_transition = mean(pre_transition_biv);
+    const obs_mean_baseline = mean(baseline_biv);
+    const obs_diff = obs_mean_transition - obs_mean_baseline;
+
+    // Permutation test: 1000 random permutations
+    const n_perms = 1000;
+    let extreme_count = 0;
+
+    for (let perm = 0; perm < n_perms; perm++) {
+      // Shuffle transition labels randomly
+      const perm_labels = Array(bivector_mag.length).fill(0);
+      for (let i = 0; i < transitions.length; i++) {
+        const random_idx = Math.floor(Math.random() * bivector_mag.length);
+        perm_labels[random_idx] = 1;
+      }
+
+      let perm_transition_biv = [];
+      let perm_baseline_biv = [];
+      for (let t = 0; t < bivector_mag.length; t++) {
+        if (perm_labels[t] === 1) {
+          perm_transition_biv.push(bivector_mag[t]);
+        } else {
+          perm_baseline_biv.push(bivector_mag[t]);
+        }
+      }
+
+      const perm_mean_transition = mean(perm_transition_biv);
+      const perm_mean_baseline = mean(perm_baseline_biv);
+      const perm_diff = perm_mean_transition - perm_mean_baseline;
+
+      if (Math.abs(perm_diff) >= Math.abs(obs_diff)) {
+        extreme_count++;
+      }
+    }
+
+    const pvalue = (extreme_count + 1) / (n_perms + 1);
+
+    // Prediction 4: Bivector as leading indicator
+    const transition_frequency = transitions.length / bivector_mag.length;
+    const bivec_coherence = 1 - (mean(bivector_mag) / Math.max(...bivector_mag));
+
+    log(`**Prediction 4: Bivector as Regime Transition Leading Indicator**`);
+    log('');
+    log(`Bivector Statistics:`);
+    log(`  Mean bivector magnitude at transitions: ${obs_mean_transition.toFixed(4)}`);
+    log(`  Mean bivector magnitude baseline: ${obs_mean_baseline.toFixed(4)}`);
+    log(`  Difference (transition - baseline): ${obs_diff.toFixed(4)}`);
+    log(`  Bivector coherence (1 = perfect separation): ${bivec_coherence.toFixed(3)}`);
+    log(`  Transition frequency: ${(transition_frequency * 100).toFixed(1)}% of time steps`);
+    log('');
+
+    log(`Permutation Test (1000 permutations):`);
+    log(`  Observed difference: ${obs_diff.toFixed(4)}`);
+    log(`  Extreme permutations: ${extreme_count}/${n_perms}`);
+    log(`  **p-value: ${pvalue.toFixed(4)}**`);
+    log('');
+
+    // Verdict based on pre-registered criterion:
+    // PASS requires: p < 0.05 AND mean_transition > baseline
+    let pred4_verdict = 'FAIL';
+    let pred4_reason = '';
+
+    const passes_pvalue_test = pvalue < 0.05;
+    const passes_direction_test = obs_mean_transition > obs_mean_baseline;
+
+    if (passes_pvalue_test && passes_direction_test) {
+      pred4_verdict = 'PASS';
+      pred4_reason = `p=${pvalue.toFixed(4)} < 0.05 AND transition mean (${obs_mean_transition.toFixed(3)}) > baseline (${obs_mean_baseline.toFixed(3)})`;
+    } else if (passes_pvalue_test) {
+      pred4_verdict = 'BORDERLINE';
+      pred4_reason = `p=${pvalue.toFixed(4)} < 0.05 but transition mean (${obs_mean_transition.toFixed(3)}) ≤ baseline (${obs_mean_baseline.toFixed(3)})`;
+    } else if (passes_direction_test && pvalue < 0.10) {
+      pred4_verdict = 'BORDERLINE';
+      pred4_reason = `Direction correct but p=${pvalue.toFixed(4)} >= 0.05`;
+    } else {
+      pred4_verdict = 'FAIL';
+      pred4_reason = `p=${pvalue.toFixed(4)} >= 0.05; insufficient evidence of regime transition signature`;
+    }
+
+    log(`**Prediction 4 Verdict**: ${pred4_verdict} — ${pred4_reason}`);
+    log('');
+
+    log(`**Interpretation**:`);
+    if (pred4_verdict === 'PASS') {
+      log(`✓ Bivector magnitude SIGNIFICANTLY differs at regime transitions (p < 0.05).`);
+      log(`✓ Transitions are characterized by elevated bivector magnitudes.`);
+      log(`✓ Bivector can serve as a statistically validated leading indicator.`);
+    } else if (pred4_verdict === 'BORDERLINE') {
+      log(`⚠ Bivector magnitude shows partial signal but does not meet strict p < 0.05 criterion.`);
+      log(`⚠ Evidence is suggestive but not definitive for regime transitions.`);
+    } else {
+      log(`✗ Bivector magnitude does not show statistically significant regime structure.`);
+      log(`✗ Detected transitions may reflect noise rather than true regime changes.`);
+    }
+    log('');
+  }
+
   // Summary
   log('═'.repeat(70));
   log('SUMMARY');
