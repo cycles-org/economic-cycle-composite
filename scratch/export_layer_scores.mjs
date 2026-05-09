@@ -60,8 +60,8 @@ const SNAPSHOT_DATES = [
 ];
 
 const BASE_URL = 'https://api.cycle.tools';
-const MIN_CALL_GAP_MS = 6500; // 6.5 seconds between API calls
-const RETRY_WAIT_MS = 65000; // 65 seconds on 429/quota error
+const MIN_CALL_GAP_MS = 0; // No rate limit (unlimited API key)
+const RETRY_WAIT_MS = 65000; // 65 seconds on 429/quota error (keep for actual errors)
 const PROGRESS_INTERVAL = 10; // Log progress every N snapshots
 
 let lastCallTime = 0;

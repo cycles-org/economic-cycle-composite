@@ -1,0 +1,640 @@
+{
+  "runDate": "2026-05-04T14:33:57.992Z",
+  "config": {
+    "symbols": [
+      {
+        "user": "^GSPC",
+        "desc": "S&P 500",
+        "tickerId": "^GSPC:YFI"
+      },
+      {
+        "user": "GLD",
+        "desc": "Gold ETF",
+        "tickerId": "GLD:YFI"
+      },
+      {
+        "user": "TLT",
+        "desc": "Long bonds ETF",
+        "tickerId": "TLT:YFI"
+      },
+      {
+        "user": "DBC",
+        "desc": "Broad commodities",
+        "tickerId": "DBC:YFI"
+      },
+      {
+        "user": "EEM",
+        "desc": "Emerging markets",
+        "tickerId": "EEM:YFI"
+      },
+      {
+        "user": "UUP",
+        "desc": "US Dollar",
+        "tickerId": "UUP:YFI"
+      },
+      {
+        "user": "VNQ",
+        "desc": "Real estate",
+        "tickerId": "VNQ:YFI"
+      },
+      {
+        "user": "WEAT",
+        "desc": "Wheat ETF",
+        "tickerId": "WEAT:YFI"
+      }
+    ],
+    "targetBars": 1000,
+    "frequency": "daily",
+    "cycleDetectionBand": {
+      "min": 50,
+      "max": 200
+    },
+    "uncorrelatedThreshold": 0.3,
+    "sharedPeriodTolerance": 0.15,
+    "nSurrogates": 1000,
+    "pcmBand": {
+      "lowFraction": 0.75,
+      "highFraction": 1.33
+    }
+  },
+  "tickers": [
+    {
+      "user": "^GSPC",
+      "desc": "S&P 500",
+      "tickerId": "^GSPC:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "GLD",
+      "desc": "Gold ETF",
+      "tickerId": "GLD:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "TLT",
+      "desc": "Long bonds ETF",
+      "tickerId": "TLT:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "DBC",
+      "desc": "Broad commodities",
+      "tickerId": "DBC:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-06T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "EEM",
+      "desc": "Emerging markets",
+      "tickerId": "EEM:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "UUP",
+      "desc": "US Dollar",
+      "tickerId": "UUP:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "VNQ",
+      "desc": "Real estate",
+      "tickerId": "VNQ:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-09T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    },
+    {
+      "user": "WEAT",
+      "desc": "Wheat ETF",
+      "tickerId": "WEAT:YFI",
+      "barsCount": 1000,
+      "firstDate": "2022-05-06T00:00:00",
+      "lastDate": "2026-05-04T00:00:00"
+    }
+  ],
+  "correlationMatrix": {
+    "^GSPC": {
+      "^GSPC": 1,
+      "GLD": 0.6135396109790096,
+      "TLT": -0.42417188603502987,
+      "DBC": 0.39664341313530244,
+      "EEM": 0.6670434607300122,
+      "UUP": 0.3281537828950646,
+      "VNQ": 0.5292200694794531,
+      "WEAT": 0.36425210947995273
+    },
+    "GLD": {
+      "^GSPC": 0.6135396109790096,
+      "GLD": 1,
+      "TLT": 0.14702897831909129,
+      "DBC": 0.28827740352304887,
+      "EEM": 0.3459706250515009,
+      "UUP": -0.37550047565265604,
+      "VNQ": 0.21414162511352072,
+      "WEAT": 0.5096775941783941
+    },
+    "TLT": {
+      "^GSPC": -0.42417188603502987,
+      "GLD": 0.14702897831909129,
+      "TLT": 1,
+      "DBC": -0.15941439393046278,
+      "EEM": 0.07302381742675988,
+      "UUP": -0.3323998109899824,
+      "VNQ": 0.28081676653849813,
+      "WEAT": -0.005883918645503788
+    },
+    "DBC": {
+      "^GSPC": 0.39664341313530244,
+      "GLD": 0.28827740352304887,
+      "TLT": -0.15941439393046278,
+      "DBC": 1,
+      "EEM": 0.2515429646695069,
+      "UUP": -0.14696691107786689,
+      "VNQ": 0.12015984391338308,
+      "WEAT": 0.19364082879689762
+    },
+    "EEM": {
+      "^GSPC": 0.6670434607300122,
+      "GLD": 0.3459706250515009,
+      "TLT": 0.07302381742675988,
+      "DBC": 0.2515429646695069,
+      "EEM": 1,
+      "UUP": -0.42833718797538706,
+      "VNQ": 0.5064574347464823,
+      "WEAT": 0.36098299408319134
+    },
+    "UUP": {
+      "^GSPC": 0.3281537828950646,
+      "GLD": -0.37550047565265604,
+      "TLT": -0.3323998109899824,
+      "DBC": -0.14696691107786689,
+      "EEM": -0.42833718797538706,
+      "UUP": 1,
+      "VNQ": -0.35238361266989504,
+      "WEAT": -0.04145340307798672
+    },
+    "VNQ": {
+      "^GSPC": 0.5292200694794531,
+      "GLD": 0.21414162511352072,
+      "TLT": 0.28081676653849813,
+      "DBC": 0.12015984391338308,
+      "EEM": 0.5064574347464823,
+      "UUP": -0.35238361266989504,
+      "VNQ": 1,
+      "WEAT": 0.14913326266531993
+    },
+    "WEAT": {
+      "^GSPC": 0.36425210947995273,
+      "GLD": 0.5096775941783941,
+      "TLT": -0.005883918645503788,
+      "DBC": 0.19364082879689762,
+      "EEM": 0.36098299408319134,
+      "UUP": -0.04145340307798672,
+      "VNQ": 0.14913326266531993,
+      "WEAT": 1
+    }
+  },
+  "overlapMatrix": {
+    "^GSPC": {
+      "^GSPC": 1000,
+      "GLD": 237,
+      "TLT": 230,
+      "DBC": 237,
+      "EEM": 237,
+      "UUP": 237,
+      "VNQ": 238,
+      "WEAT": 232
+    },
+    "GLD": {
+      "^GSPC": 237,
+      "GLD": 1000,
+      "TLT": 272,
+      "DBC": 998,
+      "EEM": 999,
+      "UUP": 879,
+      "VNQ": 933,
+      "WEAT": 521
+    },
+    "TLT": {
+      "^GSPC": 230,
+      "GLD": 272,
+      "TLT": 1000,
+      "DBC": 272,
+      "EEM": 272,
+      "UUP": 304,
+      "VNQ": 274,
+      "WEAT": 342
+    },
+    "DBC": {
+      "^GSPC": 237,
+      "GLD": 998,
+      "TLT": 272,
+      "DBC": 1000,
+      "EEM": 998,
+      "UUP": 878,
+      "VNQ": 932,
+      "WEAT": 522
+    },
+    "EEM": {
+      "^GSPC": 237,
+      "GLD": 999,
+      "TLT": 272,
+      "DBC": 998,
+      "EEM": 1000,
+      "UUP": 879,
+      "VNQ": 933,
+      "WEAT": 521
+    },
+    "UUP": {
+      "^GSPC": 237,
+      "GLD": 879,
+      "TLT": 304,
+      "DBC": 878,
+      "EEM": 879,
+      "UUP": 1000,
+      "VNQ": 836,
+      "WEAT": 559
+    },
+    "VNQ": {
+      "^GSPC": 238,
+      "GLD": 933,
+      "TLT": 274,
+      "DBC": 932,
+      "EEM": 933,
+      "UUP": 836,
+      "VNQ": 1000,
+      "WEAT": 506
+    },
+    "WEAT": {
+      "^GSPC": 232,
+      "GLD": 521,
+      "TLT": 342,
+      "DBC": 522,
+      "EEM": 521,
+      "UUP": 559,
+      "VNQ": 506,
+      "WEAT": 1000
+    }
+  },
+  "uncorrelatedPairs": [
+    {
+      "a": "TLT",
+      "b": "WEAT",
+      "r": -0.005883918645503788,
+      "n": 342
+    },
+    {
+      "a": "UUP",
+      "b": "WEAT",
+      "r": -0.04145340307798672,
+      "n": 559
+    },
+    {
+      "a": "TLT",
+      "b": "EEM",
+      "r": 0.07302381742675988,
+      "n": 272
+    },
+    {
+      "a": "DBC",
+      "b": "VNQ",
+      "r": 0.12015984391338308,
+      "n": 932
+    },
+    {
+      "a": "DBC",
+      "b": "UUP",
+      "r": -0.14696691107786689,
+      "n": 878
+    },
+    {
+      "a": "GLD",
+      "b": "TLT",
+      "r": 0.14702897831909129,
+      "n": 272
+    },
+    {
+      "a": "VNQ",
+      "b": "WEAT",
+      "r": 0.14913326266531993,
+      "n": 506
+    },
+    {
+      "a": "TLT",
+      "b": "DBC",
+      "r": -0.15941439393046278,
+      "n": 272
+    },
+    {
+      "a": "DBC",
+      "b": "WEAT",
+      "r": 0.19364082879689762,
+      "n": 522
+    },
+    {
+      "a": "GLD",
+      "b": "VNQ",
+      "r": 0.21414162511352072,
+      "n": 933
+    },
+    {
+      "a": "DBC",
+      "b": "EEM",
+      "r": 0.2515429646695069,
+      "n": 998
+    },
+    {
+      "a": "TLT",
+      "b": "VNQ",
+      "r": 0.28081676653849813,
+      "n": 274
+    },
+    {
+      "a": "GLD",
+      "b": "DBC",
+      "r": 0.28827740352304887,
+      "n": 998
+    }
+  ],
+  "cycles": {
+    "GLD": {
+      "cycleLength": 88,
+      "strength": 1.8853839252058533,
+      "bartels": 94.08485436339696,
+      "stability": 0.6038687245126063,
+      "avgPhaseStatus": "Uptrend_Neutral",
+      "avgPhaseScore": 30,
+      "rank": 2
+    },
+    "TLT": {
+      "cycleLength": 137,
+      "strength": 1.2683535358248386,
+      "bartels": 95.64716853187204,
+      "stability": 0.5842036476505009,
+      "avgPhaseStatus": "Downtrend_Starting",
+      "avgPhaseScore": 95,
+      "rank": 2
+    },
+    "DBC": {
+      "cycleLength": 61,
+      "strength": 1.8800490267949563,
+      "bartels": 78.96595163088158,
+      "stability": 0.17278012532370454,
+      "avgPhaseStatus": "Downtrend_Neutral",
+      "avgPhaseScore": -60,
+      "rank": 4
+    },
+    "EEM": {
+      "cycleLength": 78,
+      "strength": 3.027253271367344,
+      "bartels": 95.51177835364872,
+      "stability": 0.6969122926433355,
+      "avgPhaseStatus": "Uptrend_Neutral",
+      "avgPhaseScore": 60,
+      "rank": 1
+    },
+    "UUP": {
+      "cycleLength": 87,
+      "strength": 1.724504647545316,
+      "bartels": 82.499061713727,
+      "stability": 0.5789638240183123,
+      "avgPhaseStatus": "Downtrend_Neutral",
+      "avgPhaseScore": -60,
+      "rank": 0
+    },
+    "VNQ": {
+      "cycleLength": 58,
+      "strength": 2.046952299078515,
+      "bartels": 86.82938819044446,
+      "stability": 0.37551332020995115,
+      "avgPhaseStatus": "Downtrend_Starting",
+      "avgPhaseScore": 95,
+      "rank": 2
+    },
+    "WEAT": {
+      "cycleLength": 68,
+      "strength": 1.4666904128851204,
+      "bartels": 69.27086614729157,
+      "stability": 0.45021896859888044,
+      "avgPhaseStatus": "Downtrend_ApproachingBottom",
+      "avgPhaseScore": -80,
+      "rank": 0
+    }
+  },
+  "pairCycleTable": [
+    {
+      "a": "TLT",
+      "b": "WEAT",
+      "r": -0.005883918645503788,
+      "n": 342,
+      "periodA": 137,
+      "periodB": 68,
+      "sharesPeriod": false,
+      "ratio": 2.014705882352941,
+      "meanPeriod": 102.5
+    },
+    {
+      "a": "UUP",
+      "b": "WEAT",
+      "r": -0.04145340307798672,
+      "n": 559,
+      "periodA": 87,
+      "periodB": 68,
+      "sharesPeriod": false,
+      "ratio": 1.2794117647058822,
+      "meanPeriod": 77.5
+    },
+    {
+      "a": "TLT",
+      "b": "EEM",
+      "r": 0.07302381742675988,
+      "n": 272,
+      "periodA": 137,
+      "periodB": 78,
+      "sharesPeriod": false,
+      "ratio": 1.7564102564102564,
+      "meanPeriod": 107.5
+    },
+    {
+      "a": "DBC",
+      "b": "VNQ",
+      "r": 0.12015984391338308,
+      "n": 932,
+      "periodA": 61,
+      "periodB": 58,
+      "sharesPeriod": true,
+      "ratio": 1.0517241379310345,
+      "meanPeriod": 59.5
+    },
+    {
+      "a": "DBC",
+      "b": "UUP",
+      "r": -0.14696691107786689,
+      "n": 878,
+      "periodA": 61,
+      "periodB": 87,
+      "sharesPeriod": false,
+      "ratio": 1.4262295081967213,
+      "meanPeriod": 74
+    },
+    {
+      "a": "GLD",
+      "b": "TLT",
+      "r": 0.14702897831909129,
+      "n": 272,
+      "periodA": 88,
+      "periodB": 137,
+      "sharesPeriod": false,
+      "ratio": 1.5568181818181819,
+      "meanPeriod": 112.5
+    },
+    {
+      "a": "VNQ",
+      "b": "WEAT",
+      "r": 0.14913326266531993,
+      "n": 506,
+      "periodA": 58,
+      "periodB": 68,
+      "sharesPeriod": false,
+      "ratio": 1.1724137931034482,
+      "meanPeriod": 63
+    },
+    {
+      "a": "TLT",
+      "b": "DBC",
+      "r": -0.15941439393046278,
+      "n": 272,
+      "periodA": 137,
+      "periodB": 61,
+      "sharesPeriod": false,
+      "ratio": 2.2459016393442623,
+      "meanPeriod": 99
+    },
+    {
+      "a": "DBC",
+      "b": "WEAT",
+      "r": 0.19364082879689762,
+      "n": 522,
+      "periodA": 61,
+      "periodB": 68,
+      "sharesPeriod": true,
+      "ratio": 1.1147540983606556,
+      "meanPeriod": 64.5
+    },
+    {
+      "a": "GLD",
+      "b": "VNQ",
+      "r": 0.21414162511352072,
+      "n": 933,
+      "periodA": 88,
+      "periodB": 58,
+      "sharesPeriod": false,
+      "ratio": 1.5172413793103448,
+      "meanPeriod": 73
+    },
+    {
+      "a": "DBC",
+      "b": "EEM",
+      "r": 0.2515429646695069,
+      "n": 998,
+      "periodA": 61,
+      "periodB": 78,
+      "sharesPeriod": false,
+      "ratio": 1.278688524590164,
+      "meanPeriod": 69.5
+    },
+    {
+      "a": "TLT",
+      "b": "VNQ",
+      "r": 0.28081676653849813,
+      "n": 274,
+      "periodA": 137,
+      "periodB": 58,
+      "sharesPeriod": false,
+      "ratio": 2.3620689655172415,
+      "meanPeriod": 97.5
+    },
+    {
+      "a": "GLD",
+      "b": "DBC",
+      "r": 0.28827740352304887,
+      "n": 998,
+      "periodA": 88,
+      "periodB": 61,
+      "sharesPeriod": false,
+      "ratio": 1.4426229508196722,
+      "meanPeriod": 74.5
+    }
+  ],
+  "pcmResults": [
+    {
+      "a": "DBC",
+      "b": "VNQ",
+      "r": 0.12015984391338308,
+      "n": 773,
+      "periodA": 61,
+      "periodB": 58,
+      "sharesPeriod": true,
+      "ratio": 1.0517241379310345,
+      "meanPeriod": 59.5,
+      "band": {
+        "low": 44.625,
+        "high": 79.135,
+        "lowFreq": 0.012636633600808744,
+        "highFreq": 0.022408963585434174
+      },
+      "edgeTrim": 80,
+      "alignedBars": 933,
+      "stdLinear": 1.7986776158258635,
+      "stdCircular": 2.5620508684334835,
+      "meanLagRad": -0.21125415703110856,
+      "meanLagDays": -2.0005175287426384,
+      "surrogateMean": 1.3737316262595882,
+      "surrogateQ05": 0.7555190938638519,
+      "surrogateQ50": 1.3046883342990436,
+      "surrogateQ95": 2.1968531218373304,
+      "pValue": 0.992,
+      "verdict": "NOT significant"
+    },
+    {
+      "a": "DBC",
+      "b": "WEAT",
+      "r": 0.19364082879689762,
+      "n": 351,
+      "periodA": 61,
+      "periodB": 68,
+      "sharesPeriod": true,
+      "ratio": 1.1147540983606556,
+      "meanPeriod": 64.5,
+      "band": {
+        "low": 48.375,
+        "high": 85.78500000000001,
+        "lowFreq": 0.01165704960074605,
+        "highFreq": 0.020671834625323
+      },
+      "edgeTrim": 86,
+      "alignedBars": 523,
+      "stdLinear": 1.7139375513111932,
+      "stdCircular": 2.2817091439860135,
+      "meanLagRad": -0.00565921120895779,
+      "meanLagDays": -0.05809459774498172,
+      "surrogateMean": 1.382587270133731,
+      "surrogateQ05": 0.8204926595692957,
+      "surrogateQ50": 1.3581729236167446,
+      "surrogateQ95": 2.077735925392385,
+      "pValue": 0.982,
+      "verdict": "NOT significant"
+    }
+  ]
+}
