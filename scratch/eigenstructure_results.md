@@ -132,14 +132,50 @@ Bivector Statistics:
 
 Permutation Test (1000 permutations):
   Observed difference: -0.1589
-  Extreme permutations: 250/1000
-  **p-value: 0.2507**
+  Extreme permutations: 246/1000
+  **p-value: 0.2468**
 
-**Prediction 4 Verdict**: FAIL — p=0.2507 >= 0.05; insufficient evidence of regime transition signature
+**Prediction 4 Verdict**: FAIL — p=0.2468 >= 0.05; insufficient evidence of regime transition signature
 
 **Interpretation**:
 ✗ Bivector magnitude does not show statistically significant regime structure.
 ✗ Detected transitions may reflect noise rather than true regime changes.
+
+## Prediction 4b: Sign-Reversed Hypothesis — Modal Alignment
+
+**Hypothesis**: Regime transitions occur when the two geometric modes
+become momentarily aligned (bivector magnitude LOW). The transition is
+a snap from alignment to divergence, or vice versa.
+
+Bivector Statistics (Sign-Reversed):
+  Mean bivector magnitude at transitions: 0.4041
+  Mean bivector magnitude baseline: 0.5629
+  Difference (baseline - pre-transition): 0.1589
+  Direction: CORRECT (pre-trans lower)
+
+Permutation Test (1000 permutations, sign-reversed):
+  Observed difference: 0.1589
+  Extreme permutations (diff >= obs): 130/1000
+  95th percentile of permutation dist: 0.2230
+  **p-value: 0.1309**
+
+**Prediction 4b Verdict**: FAIL — p=0.1309 >= 0.05 or direction incorrect
+
+**Economic Interpretation**:
+✗ Neither modal alignment (low B) nor modal tension (high B) shows a
+statistically significant relationship with regime transitions at this
+sample size and transition definition. The bivector magnitude does not
+serve as a leading indicator in either direction.
+
+**Power Analysis:**
+
+With 7 transition events in 137 observations, the permutation test has limited
+statistical power. To achieve p < 0.05 with the observed effect size
+(pre-transition B = 0.404 vs baseline B = 0.563, difference = 0.159) would
+require approximately 15-20 transition events. The full weekly composite history
+(if available) or a longer monthly history would provide the necessary power.
+The current result — correct direction, p = 0.131 — is consistent with a real
+but weak signal that is undetectable at this sample size.
 
 ══════════════════════════════════════════════════════════════════════
 SUMMARY

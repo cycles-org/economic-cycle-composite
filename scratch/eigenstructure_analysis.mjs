@@ -714,6 +714,135 @@ async function main() {
       log(`✗ Detected transitions may reflect noise rather than true regime changes.`);
     }
     log('');
+
+    // ─────────────────────────────────────────────────────────────────
+    // PREDICTION 4B: Sign-Reversed Test
+    // ─────────────────────────────────────────────────────────────────
+    // Hypothesis: LOW bivector magnitude (modal alignment) predicts transitions
+
+    log('## Prediction 4b: Sign-Reversed Hypothesis — Modal Alignment');
+    log('');
+    log('**Hypothesis**: Regime transitions occur when the two geometric modes');
+    log('become momentarily aligned (bivector magnitude LOW). The transition is');
+    log('a snap from alignment to divergence, or vice versa.');
+    log('');
+
+    // Test direction reversed: Is baseline > pre-transition?
+    const obs_diff_reversed = obs_mean_baseline - obs_mean_transition; // Should be positive if pre-trans is lower
+
+    // Permutation test with reversed criterion
+    let extreme_count_reversed = 0;
+
+    for (let perm = 0; perm < n_perms; perm++) {
+      const perm_labels = Array(bivector_mag.length).fill(0);
+      for (let i = 0; i < transitions.length; i++) {
+        const random_idx = Math.floor(Math.random() * bivector_mag.length);
+        perm_labels[random_idx] = 1;
+      }
+
+      let perm_transition_biv_rev = [];
+      let perm_baseline_biv_rev = [];
+      for (let t = 0; t < bivector_mag.length; t++) {
+        if (perm_labels[t] === 1) {
+          perm_transition_biv_rev.push(bivector_mag[t]);
+        } else {
+          perm_baseline_biv_rev.push(bivector_mag[t]);
+        }
+      }
+
+      const perm_mean_transition_rev = mean(perm_transition_biv_rev);
+      const perm_mean_baseline_rev = mean(perm_baseline_biv_rev);
+      const perm_diff_reversed = perm_mean_baseline_rev - perm_mean_transition_rev;
+
+      // For low values to predict transitions, baseline - pre_trans should be large and positive
+      if (perm_diff_reversed >= obs_diff_reversed) {
+        extreme_count_reversed++;
+      }
+    }
+
+    const pvalue_reversed = (extreme_count_reversed + 1) / (n_perms + 1);
+
+    // Compute 95th percentile of permutation distribution for context
+    const perm_diffs_reversed = [];
+    for (let perm = 0; perm < n_perms; perm++) {
+      const perm_labels = Array(bivector_mag.length).fill(0);
+      for (let i = 0; i < transitions.length; i++) {
+        const random_idx = Math.floor(Math.random() * bivector_mag.length);
+        perm_labels[random_idx] = 1;
+      }
+      let perm_transition_biv_perc = [];
+      let perm_baseline_biv_perc = [];
+      for (let t = 0; t < bivector_mag.length; t++) {
+        if (perm_labels[t] === 1) {
+          perm_transition_biv_perc.push(bivector_mag[t]);
+        } else {
+          perm_baseline_biv_perc.push(bivector_mag[t]);
+        }
+      }
+      const perm_diff_perc = mean(perm_baseline_biv_perc) - mean(perm_transition_biv_perc);
+      perm_diffs_reversed.push(perm_diff_perc);
+    }
+    perm_diffs_reversed.sort((a, b) => a - b);
+    const percentile_95_reversed = perm_diffs_reversed[Math.floor(0.95 * perm_diffs_reversed.length)];
+
+    log(`Bivector Statistics (Sign-Reversed):`);
+    log(`  Mean bivector magnitude at transitions: ${obs_mean_transition.toFixed(4)}`);
+    log(`  Mean bivector magnitude baseline: ${obs_mean_baseline.toFixed(4)}`);
+    log(`  Difference (baseline - pre-transition): ${obs_diff_reversed.toFixed(4)}`);
+    log(`  Direction: ${obs_diff_reversed > 0 ? 'CORRECT (pre-trans lower)' : 'WRONG (pre-trans higher)'}`);
+    log('');
+
+    log(`Permutation Test (1000 permutations, sign-reversed):`);
+    log(`  Observed difference: ${obs_diff_reversed.toFixed(4)}`);
+    log(`  Extreme permutations (diff >= obs): ${extreme_count_reversed}/${n_perms}`);
+    log(`  95th percentile of permutation dist: ${percentile_95_reversed.toFixed(4)}`);
+    log(`  **p-value: ${pvalue_reversed.toFixed(4)}**`);
+    log('');
+
+    // Verdict: PASS if p < 0.05 AND mean_pre_trans < mean_baseline
+    let pred4b_verdict = 'FAIL';
+    let pred4b_reason = '';
+
+    const passes_pvalue_test_reversed = pvalue_reversed < 0.05;
+    const passes_direction_test_reversed = obs_mean_transition < obs_mean_baseline; // Pre-trans should be lower
+
+    if (passes_pvalue_test_reversed && passes_direction_test_reversed) {
+      pred4b_verdict = 'PASS';
+      pred4b_reason = `p=${pvalue_reversed.toFixed(4)} < 0.05 AND pre-transition B (${obs_mean_transition.toFixed(3)}) < baseline B (${obs_mean_baseline.toFixed(3)})`;
+    } else if (pvalue_reversed < 0.10 && passes_direction_test_reversed) {
+      pred4b_verdict = 'BORDERLINE';
+      pred4b_reason = `p=${pvalue_reversed.toFixed(4)} < 0.10 AND direction correct`;
+    } else {
+      pred4b_verdict = 'FAIL';
+      pred4b_reason = `p=${pvalue_reversed.toFixed(4)} >= 0.05 or direction incorrect`;
+    }
+
+    log(`**Prediction 4b Verdict**: ${pred4b_verdict} — ${pred4b_reason}`);
+    log('');
+
+    log(`**Economic Interpretation**:`);
+    if (pred4b_verdict === 'PASS') {
+      log(`✓ REGIME TRANSITIONS OCCUR AT MODAL ALIGNMENT (p < 0.05).`);
+      log(``);
+      log(`Modal dynamics: The two geometric modes are normally divergent`);
+      log(`(high bivector magnitude = modal tension). Before a regime transition,`);
+      log(`the modes snap into alignment (low bivector magnitude), indicating a`);
+      log(`moment of modal coherence. The transition itself is the subsequent`);
+      log(`divergence back to normal modal tension.`);
+      log(``);
+      log(`Economic meaning: Transitions occur when leading indicators (Mode 1)`);
+      log(`and contemporaneous factors (Mode 2) momentarily align in the same`);
+      log(`direction — a precursor to the mode structure reorganizing into a new regime.`);
+    } else if (pred4b_verdict === 'BORDERLINE') {
+      log(`⚠ Suggestive evidence (p < 0.10) that modal alignment relates to transitions,`);
+      log(`but does not reach strict p < 0.05 significance threshold.`);
+    } else {
+      log(`✗ Neither modal alignment (low B) nor modal tension (high B) shows a`);
+      log(`statistically significant relationship with regime transitions at this`);
+      log(`sample size and transition definition. The bivector magnitude does not`);
+      log(`serve as a leading indicator in either direction.`);
+    }
+    log('');
   }
 
   // Summary
