@@ -7,9 +7,46 @@ import type {
 
 const BASE_URL = 'https://api.cycle.tools';
 
+/**
+ * Quota-error string match.
+ *
+ * NOTE: Only match the explicit *daily/plan* quota message. Generic substring
+ * matches like "quota exceeded" also trigger on transient 429 throttle bodies,
+ * which masquerades concurrency throttling as a billing issue.
+ */
 function checkQuotaError(text: string): void {
-  if (text.includes('API calls quota exceeded') || text.includes('quota exceeded')) {
+  if (text.includes('API calls quota exceeded')) {
     throw new Error('API quota exceeded. Check your API key or plan limits.');
+  }
+}
+
+/**
+ * fetch wrapper that honors HTTP 429 (Too Many Requests) with the server's
+ * Retry-After hint. The Cycle Tools API enforces a concurrent-connection
+ * ceiling (separate from the daily call quota) and returns 429 + Retry-After
+ * when too many long-lived calls (e.g. WaitUntilUpdateCompleted) overlap.
+ *
+ * Retries up to `maxRetries` times. Adds small jitter so a thundering herd
+ * doesn't all wake up at the same instant.
+ */
+export async function fetchWithRetry(
+  url: string,
+  init?: RequestInit,
+  maxRetries = 5,
+): Promise<Response> {
+  let attempt = 0;
+  while (true) {
+    const resp = await fetch(url, init);
+    if (resp.status !== 429 || attempt >= maxRetries) return resp;
+
+    const retryAfterRaw = resp.headers.get('Retry-After');
+    const retryAfterSec = retryAfterRaw ? Number(retryAfterRaw) : 1;
+    const baseMs = (Number.isFinite(retryAfterSec) && retryAfterSec > 0 ? retryAfterSec : 1) * 1000;
+    const jitterMs = Math.floor(Math.random() * 250);
+    // Exponential backoff multiplier on top of server hint (1×, 2×, 4×, ...)
+    const backoffMs = baseMs * Math.pow(2, attempt) + jitterMs;
+    await new Promise(r => setTimeout(r, backoffMs));
+    attempt++;
   }
 }
 
@@ -45,7 +82,7 @@ export async function ensureDataset(
     `?api_key=${apiKey}&tickerId=${encodeURIComponent(tickerId)}` +
     `&unixFrom=0&unixTo=${unixTo}&lastclose=true`;
 
-  const resp = await fetch(ensureUrl);
+  const resp = await fetchWithRetry(ensureUrl);
   const text = await resp.text();
   checkQuotaError(text);
 
@@ -63,7 +100,7 @@ export async function ensureDataset(
     const waitUrl =
       `${BASE_URL}/api/data/WaitUntilUpdateCompleted` +
       `?api_key=${apiKey}&requestId=${result.trackingId}&timeoutSeconds=30`;
-    const waitResp = await fetch(waitUrl);
+    const waitResp = await fetchWithRetry(waitUrl);
     const waitText = await waitResp.text();
     checkQuotaError(waitText);
   }
@@ -79,7 +116,7 @@ export async function getDatasetSeries(
     `${BASE_URL}/api/data/GetDatasetSeries` +
     `?api_key=${apiKey}&tickerid=${encodeURIComponent(tickerId)}&maxbars=${maxbars}`;
 
-  const resp = await fetch(url);
+  const resp = await fetchWithRetry(url);
   if (!resp.ok) {
     throw new Error(`GetDatasetSeries HTTP ${resp.status} for ${tickerId}`);
   }
@@ -108,7 +145,7 @@ export async function cycleScanner(
     `&sortByStrength=true&includeSpectrum=true` +
     `&dominantPeakFinder=true&useStability=true`;
 
-  const resp = await fetch(url, {
+  const resp = await fetchWithRetry(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(closes), // raw array, not wrapped
@@ -137,7 +174,7 @@ export async function cycleScannerNoDetrend(
     `&bartelsLimit=49` +
     `&dtype=0`;
 
-  const resp = await fetch(url, {
+  const resp = await fetchWithRetry(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(closes),
@@ -160,7 +197,7 @@ export async function getCrsi(
   length: number
 ): Promise<CrsiResult> {
   const url = `${BASE_URL}/api/DSP/CRSI?api_key=${apiKey}&length=${length}`;
-  const resp = await fetch(url, {
+  const resp = await fetchWithRetry(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(closes),
@@ -182,7 +219,7 @@ export async function hpDetrend(
   datapoints: number[]
 ): Promise<number[]> {
   const url = `${BASE_URL}/api/DSP/Detrend?api_key=${apiKey}&dtype=0&ret=false`;
-  const resp = await fetch(url, {
+  const resp = await fetchWithRetry(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(datapoints),
@@ -207,7 +244,7 @@ export async function getDatasetSeriesRaw(
     `${BASE_URL}/api/data/GetDatasetSeries` +
     `?api_key=${apiKey}&tickerid=${encodeURIComponent(tickerId)}&maxbars=${maxbars}`;
 
-  const resp = await fetch(url);
+  const resp = await fetchWithRetry(url);
   if (!resp.ok) {
     throw new Error(`GetDatasetSeries HTTP ${resp.status} for ${tickerId}`);
   }

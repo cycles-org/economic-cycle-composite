@@ -15,7 +15,7 @@
 
 import type { OhlcvBar, CyclePeak, LiquiditySeriesResult, LiquidityResult } from '../types';
 import { LIQUIDITY_NFL_COMPONENTS, LIQUIDITY_SCORED_SERIES, LIQUIDITY_FX_TICKERS } from '../config/seriesRegistry';
-import { ensureDataset, getDatasetSeriesRaw, cycleScannerNoDetrend, getCrsi, hpDetrend } from './cycleToolsApi';
+import { ensureDataset, getDatasetSeriesRaw, cycleScannerNoDetrend, getCrsi, hpDetrend, fetchWithRetry } from './cycleToolsApi';
 import { interpolatePhaseScore } from './phaseScoring';
 
 export { interpolatePhaseScore };
@@ -792,7 +792,7 @@ export async function runLiquidityPipeline(
         `&sortByStrength=true&includeSpectrum=false` +
         `&dominantPeakFinder=true&useStability=true` +
         `&bartelsLimit=10&dtype=0`;
-      const structResp = await fetch(structUrl, {
+      const structResp = await fetchWithRetry(structUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(validNorm),
