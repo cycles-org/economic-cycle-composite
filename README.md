@@ -69,11 +69,13 @@ All analysis runs client-side via the [Cycle Tools REST API](https://cycle.tools
 
 - Node.js 18+
 - A Cycle Tools API key from <https://cycle.tools>. The key is entered in the browser UI at runtime; it is not stored in the repo or committed anywhere.
+- (Optional) The historical liquidity-momentum pre-seed file `public/US-GLI-MOM.csv`. **This file is not committed to the public repo** — request it from the maintainer and drop it into `public/` before running the pipeline. Without it the L5 structural cycle score can drift by 15–20 points; the pipeline still runs and L1–L4 are unaffected.
 
 ### Install and run
 
 ```bash
 npm install
+# Drop the pre-seed CSV into public/US-GLI-MOM.csv if you have it
 npm run dev
 ```
 
@@ -106,7 +108,7 @@ EconomicCycleComposite/
 │   │   └── layerSummaries.ts    Per-layer regime labels & reasoning
 │   └── types/                   Shared type definitions
 ├── public/
-│   └── US-GLI-MOM.csv           Historical liquidity momentum 1975-2025 (pre-seed — required)
+│   └── US-GLI-MOM.csv           Historical liquidity-momentum pre-seed (not in public repo; request separately)
 ├── docs/
 │   ├── composite-methodology.md        Overall 5-layer methodology (entry point)
 │   ├── liquidity-layer-methodology.md  L5 deep dive (liquidity framework)

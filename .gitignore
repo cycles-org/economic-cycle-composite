@@ -31,3 +31,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Proprietary pre-seed data — obtain locally, do not commit to public repo
+public/US-GLI-MOM.csv

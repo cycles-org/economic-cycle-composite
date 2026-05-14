@@ -40,7 +40,7 @@ In this order:
 | `src/services/narrative.ts` | Rule-based reasoning text generation |
 | `src/config/seriesRegistry.ts` | All series config: `L1_SERIES`, ..., `LIQUIDITY_SCORED_SERIES`, `LIQUIDITY_NFL_COMPONENTS`, `LIQUIDITY_FX_TICKERS` |
 | `src/config/layerSummaries.ts` | Per-layer regime labels & reasoning text |
-| `public/US-GLI-MOM.csv` | **Howell GLI-MOM 1975-2025 — runtime pre-seed data. Do NOT delete.** |
+| `public/US-GLI-MOM.csv` | **Historical liquidity-momentum pre-seed (1975-2025) — runtime data, not committed to the public repo.** Obtain it from the maintainer and drop into `public/` before running the L5 pipeline. Listed in `.gitignore` so it stays out of git. Without it the structural cycle score will be off by 15-20 points. |
 
 ## Running Locally
 
