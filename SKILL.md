@@ -7,16 +7,31 @@ description: Hand-off skill for working on the Economic Cycle Composite project.
 
 This skill is a hand-off document for anyone (or any Claude Code session) picking up this codebase. It is **not** a replacement for the methodology documents in `docs/`; it is an index and a set of working notes that point you at the right doc for the question you have.
 
-## Companion Skill (Required)
+## Companion Skills
 
-This project depends on the **`cycle-tools-api`** skill, a private Anthropic-Claude skill that wraps the Cycle Tools REST API at `api.cycle.tools`. Install that skill before doing any cycle-related work here — it contains:
+### `cycle-tools-api` (required)
+
+This project depends on the **`cycle-tools-api`** skill, a Claude skill that wraps the Cycle Tools REST API at `api.cycle.tools`. Install it before doing any cycle-related work here — it contains:
 
 - Authoritative endpoint reference (`/api/cycles/CycleScanner`, `/api/cycles/CRSI`, `/api/DSP/Detrend`, etc.)
 - The canonical phase-scoring lookup tables (PHASE_FIXED, PHASE_INTERPOLATED)
 - Correct parameter names (notably `dtype` lowercase, **not** `dType`)
 - CRSI band+direction scoring spec (Method A: crossing override + 6-state base)
+- HTTP 429 / `Retry-After` handling pattern (the codebase implements it in `cycleToolsApi.ts`)
 
-If you do not have the `cycle-tools-api` skill, request it from the repository owner before continuing. Without it, you will re-derive details that are already specified and likely get subtle parameters wrong.
+Without this skill, you will re-derive details that are already specified and likely get subtle parameters wrong.
+
+### `webapp-design` (recommended for any UI work)
+
+The dashboard is themed with the **Foundation for the Study of Cycles (FSC)** editorial-research design system from the **`webapp-design`** skill. Install it if you plan to:
+
+- Touch the visual design (colors, typography, spacing, component look-and-feel)
+- Add new components and want them to match the existing FSC aesthetic
+- Retarget the dashboard for a different brand
+
+The brand layer lives at `src/styles/brand/` and is a direct copy of `webapp-design/brand/`. The active brand is selected in `src/styles/brand/theme.css` (FSC by default). Brand assets (logos, cosmos background) are at `public/brand/`.
+
+Both skills live in the `cycle-tools-plugins` marketplace: <https://github.com/cycles-org/cycle-tools-plugins>.
 
 ## Read These Three Documents First
 

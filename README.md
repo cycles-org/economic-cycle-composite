@@ -108,7 +108,9 @@ EconomicCycleComposite/
 │   │   └── layerSummaries.ts    Per-layer regime labels & reasoning
 │   └── types/                   Shared type definitions
 ├── public/
-│   └── US-GLI-MOM.csv           Historical liquidity-momentum pre-seed (not in public repo; request separately)
+│   ├── US-GLI-MOM.csv           Historical liquidity-momentum pre-seed (not in public repo; request separately)
+│   └── brand/                   FSC logo + cosmos background assets
+├── src/styles/brand/             FSC design tokens + theme (from the webapp-design skill)
 ├── docs/
 │   ├── composite-methodology.md        Overall 5-layer methodology (entry point)
 │   ├── liquidity-layer-methodology.md  L5 deep dive (liquidity framework)
@@ -132,6 +134,15 @@ If you use Claude Code, read `SKILL.md` first. It points to the authoritative do
 - Tailwind CSS
 - Recharts for visualization
 - No backend — all computation is client-side via the Cycle Tools API
+
+## Visual Design
+
+The UI is themed with the **Foundation for the Study of Cycles (FSC)** editorial-research system from the [`webapp-design`](https://github.com/cycles-org/cycle-tools-plugins/tree/main/skills/webapp-design) Claude skill. Two modes ship by default:
+
+- **Paper / academic** (light) — cream surface, warm-slate ink, gold accent. Optimized for reading dense composite tables.
+- **Cosmos / hero** (dark) — near-black navy, cream ink, gold accent. Same tokens, inverted surface.
+
+Brand layer lives in `src/styles/brand/` and `public/brand/`. Swap themes by editing `src/styles/brand/theme.css` to import a different file under `themes/`. The app's existing `--th-*` Tailwind tokens are remapped onto FSC semantic tokens, so component JSX never references the brand directly.
 
 ## License
 
