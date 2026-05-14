@@ -1,12 +1,26 @@
 @import "tailwindcss";
 
-/*
- * Theme tokens — CSS custom properties for light/dark theming.
+/* ── FSC brand layer (Foundation for the Study of Cycles) ──────
  *
- * Structural colors (backgrounds, text, borders) swap automatically
- * based on .light / .dark class on <html>.
+ * The brand layer is two CSS files under src/styles/brand/.
+ *   - tokens.css : structural tokens (spacing, type scale, radii, motion).
+ *                  Brand-agnostic. Edit only to change system shape.
+ *   - theme.css  : active brand. Imports themes/fsc.css by default.
+ *                  Swap the import to retarget for a different brand.
  *
- * Usage in components:
+ * The legacy `--th-*` token names used throughout this app are remapped
+ * below to FSC semantic tokens, so every component picks up the brand
+ * without any JSX/Tailwind class changes.
+ * ──────────────────────────────────────────────────────────── */
+@import "./styles/brand/tokens.css";
+@import "./styles/brand/theme.css";
+
+/* ── App-level theme tokens (mapped to FSC semantic tokens) ────
+ *
+ * The app uses semantic Tailwind class names backed by --th-* CSS
+ * variables. Light mode = FSC Paper/academic; dark mode = FSC Cosmos/hero.
+ *
+ * Usage in components remains unchanged:
  *   bg-pg              page background
  *   bg-card            card / panel background
  *   bg-raised          inputs, bar tracks, elevated surfaces
@@ -19,77 +33,81 @@
  *   border-line        default border
  *   border-line2       strong border
  *
- * Score / accent colors:
- *   text-c-green       top score / positive
- *   text-c-green2      good score
- *   text-c-yellow      neutral score
- *   text-c-orange      warning score
- *   text-c-red         bad score / negative / error
- *   text-c-blue        info / links
- */
+ * Score / status colors map to FSC status palette + restrained ramps.
+ * ──────────────────────────────────────────────────────────── */
 
-/* ── Light theme (default) ─────────────────────────────────── */
+/* ── Light theme — FSC Paper (cream + slate ink + gold accent) ──
+ * Values inlined as direct hex (not var() chains) so they resolve
+ * inside SVG `stroke=""` attributes across all browsers. The chained
+ * version worked for HTML/CSS but some browsers stop one level deep
+ * in SVG presentation-attribute contexts.
+ */
 :root {
   /* Structural */
-  --th-pg: #f8fafc;
-  --th-card: #ffffff;
-  --th-raised: #e2e8f0;
-  --th-hover: #cbd5e1;
-  --th-ink: #0f172a;
-  --th-ink2: #475569;
-  --th-ink3: #64748b;
-  --th-ink4: #94a3b8;
-  --th-ink5: #cbd5e1;
-  --th-line: #e2e8f0;
-  --th-line2: #cbd5e1;
-  --th-overlay-bg: rgba(0,0,0,0.3);
-  --gauge-track: #cbd5e1;
-  --needle: #0f172a;
+  --th-pg:       #F7F6F2;   /* cream paper                          */
+  --th-card:     #FFFFFF;
+  --th-raised:   #ECEAE3;
+  --th-hover:    #D9D6CD;
+  --th-ink:      #1B1A18;   /* near-black ink                       */
+  --th-ink2:     #2E2D29;
+  --th-ink3:     #4A4842;
+  --th-ink4:     #6B675F;
+  --th-ink5:     #8C8880;
+  --th-line:     #D9D6CD;
+  --th-line2:    #B8B4A8;
+  --th-overlay-bg: rgba(11, 31, 58, 0.16);
+  --gauge-track: #D9D6CD;
+  --needle:      #1B1A18;
 
-  /* Score text colors (WCAG AA on white) */
-  --th-c-green: #15803d;
-  --th-c-green2: #16a34a;
-  --th-c-yellow: #a16207;
-  --th-c-orange: #c2410c;
-  --th-c-red: #b91c1c;
+  /* Score / status colors (WCAG AA on cream) — derived from FSC
+     status palette with darker variants for the ends of the scale. */
+  --th-c-green:  #1f6243;   /* deep bull green   */
+  --th-c-green2: #2F7D5A;
+  --th-c-yellow: #C68A14;
+  --th-c-orange: #A85E1A;
+  --th-c-red:    #B23A2E;
 
-  /* Accent colors */
-  --th-c-blue: #2563eb;
-  --th-c-purple: #7e22ce;
-  --th-c-cyan: #0e7490;
-  --th-c-amber: #92400e;
+  /* Accent colors mapped to FSC blue + teal + ochre */
+  --th-c-blue:   #14456E;   /* FSC deep blue     */
+  --th-c-purple: #6E3C8A;
+  --th-c-cyan:   #1B7B86;   /* FSC deep teal     */
+  --th-c-amber:  #D4A537;   /* FSC ochre/gold    */
 }
 
-/* ── Dark theme ────────────────────────────────────────────── */
+/* ── Dark theme — FSC Cosmos (near-black navy + cream text) ────
+ * Values inlined as direct hex (no var() chains) so they resolve
+ * inside SVG `stroke=""` and any other presentation-attribute context.
+ */
 .dark {
-  --th-pg: #030712;
-  --th-card: #111827;
-  --th-raised: #1f2937;
-  --th-hover: #374151;
-  --th-ink: #ffffff;
-  --th-ink2: #d1d5db;
-  --th-ink3: #9ca3af;
-  --th-ink4: #6b7280;
-  --th-ink5: #4b5563;
-  --th-line: #1f2937;
-  --th-line2: #374151;
-  --th-overlay-bg: rgba(0,0,0,0.7);
-  --gauge-track: #374151;
-  --needle: #ffffff;
+  --th-pg:       #0B1F3A;   /* cosmos navy                          */
+  --th-card:     #122B4E;
+  --th-raised:   #1A3766;
+  --th-hover:    #234686;
+  --th-ink:      #F2EEE2;   /* cream on cosmos                      */
+  --th-ink2:     #D6D2C5;
+  --th-ink3:     #A9B3C5;
+  --th-ink4:     #7E899D;
+  --th-ink5:     #5C6677;
+  --th-line:     #1F2B45;
+  --th-line2:    #2E3E5E;
+  --th-overlay-bg: rgba(5, 11, 26, 0.72);
+  --gauge-track: #2E3E5E;
+  --needle:      #F2EEE2;
 
-  --th-c-green: #4ade80;
-  --th-c-green2: #86efac;
-  --th-c-yellow: #fde047;
-  --th-c-orange: #fb923c;
-  --th-c-red: #f87171;
+  /* Score colors brightened for cosmos contrast */
+  --th-c-green:  #6FCBA0;
+  --th-c-green2: #4FB28A;
+  --th-c-yellow: #E2B848;
+  --th-c-orange: #E68F4A;
+  --th-c-red:    #E07A6E;
 
-  --th-c-blue: #60a5fa;
-  --th-c-purple: #c084fc;
-  --th-c-cyan: #22d3ee;
-  --th-c-amber: #fbbf24;
+  --th-c-blue:   #6EA8D5;
+  --th-c-purple: #B597D1;
+  --th-c-cyan:   #6FC5CF;
+  --th-c-amber:  #D4A537;
 }
 
-/* ── Register as Tailwind theme colors ─────────────────────── */
+/* ── Register as Tailwind theme colors ───────────────────────── */
 @theme {
   --color-pg: var(--th-pg);
   --color-card: var(--th-card);
@@ -112,4 +130,33 @@
   --color-c-purple: var(--th-c-purple);
   --color-c-cyan: var(--th-c-cyan);
   --color-c-amber: var(--th-c-amber);
+
+  /* FSC display typography for headings */
+  --font-display: var(--font-display);
+  --font-serif:   var(--font-serif);
+  --font-mono:    var(--font-mono);
+}
+
+/* ── Base typography (FSC) ─────────────────────────────────── */
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--th-ink);
+  background: var(--th-pg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings get the FSC slab serif. App-specific overrides
+   (e.g. .font-sans on a specific h3) still win because they target
+   the element directly. */
+h1, h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* FSC accent rule for cards & dividers — restrained, never decorative. */
+.fsc-rule-accent {
+  border-color: var(--accent);
 }

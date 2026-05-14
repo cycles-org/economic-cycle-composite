@@ -36,8 +36,10 @@ const GREEN = 'var(--th-c-green)';
 const ORANGE = 'var(--th-c-orange)';
 const RED = 'var(--th-c-red)';
 const BLUE = 'var(--th-c-blue)';
-const WAVE = 'var(--th-c-blue)';
-const WAVE_FUTURE = 'var(--th-ink3)';
+// Wave (past) uses the primary ink color so it reads strongly against any
+// surface — cream paper, cosmos navy, or modal scrim — regardless of theme.
+const WAVE = 'var(--th-ink2)';
+const WAVE_FUTURE = 'var(--th-ink4)';
 
 function waveY(t: number, cy: number, amp: number): number {
   return cy - amp * Math.sin(2 * Math.PI * t - Math.PI / 2);
@@ -137,7 +139,7 @@ export function PhaseIcon({ phaseStatus, avgPhaseScore, size = 22 }: Props) {
         points={pastPath}
         fill="none"
         stroke={WAVE}
-        strokeWidth="1.8"
+        strokeWidth="2.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -146,7 +148,7 @@ export function PhaseIcon({ phaseStatus, avgPhaseScore, size = 22 }: Props) {
         points={futurePath}
         fill="none"
         stroke={WAVE_FUTURE}
-        strokeWidth="1.4"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeDasharray="2 1.5"
@@ -219,7 +221,7 @@ export function PhaseIconLarge({ phaseStatus, avgPhaseScore }: Omit<Props, 'size
           points={pastP}
           fill="none"
           stroke={WAVE}
-          strokeWidth="2"
+          strokeWidth="2.6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -228,7 +230,7 @@ export function PhaseIconLarge({ phaseStatus, avgPhaseScore }: Omit<Props, 'size
           points={futureP}
           fill="none"
           stroke={WAVE_FUTURE}
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray="4 3"
